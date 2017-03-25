@@ -1,0 +1,12 @@
+[ProjectGroup]
+Version=1.0
+[Project1]
+ProjectPath=..\..\FAT32\HARD\FAT32.PRJPCB
+[Project2]
+ProjectPath=..\..\FAT41\HARD\FAT41.PrjPCB
+[Project3]
+ProjectPath=..\..\FAT35\HARD\FAT35.PrjPCB
+[Project4]
+ProjectPath=..\..\..\Protel\GAVT3\GAVT3.PRJPCB
+[Project5]
+ProjectPath=MODEM\MODEM.PrjPCB

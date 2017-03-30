@@ -1,0 +1,37 @@
+Protel Design System Design Rule Check
+PCB File : \Users\Pal\DEVICES\FAT89\HARD\MODEM\main.PcbDoc
+Date     : 29.03.2017
+Time     : 16:21:41
+
+Processing Rule : Clearance Constraint (Gap=0.5mm) (InPoly),(InNet('NetD3_1') or
+InNet('NetC10_1') or
+InNet('NetD4_2'))
+Rule Violations :0
+
+Processing Rule : Clearance Constraint (Gap=0.5mm) (InComponent(U4)),(InPoly)
+Rule Violations :0
+
+Processing Rule : Clearance Constraint (Gap=0.25mm) (All),(All)
+Rule Violations :0
+
+Processing Rule : Short-Circuit Constraint (Allowed=No) (All),(All)
+Rule Violations :0
+
+Processing Rule : Broken-Net Constraint ( (All) )
+Rule Violations :0
+
+Processing Rule : Clearance Constraint (Gap=0.5mm) (InNet('NetP1_1')),(InPoly)
+Rule Violations :0
+
+Processing Rule : Width Constraint (Min=0.2mm) (Max=3mm) (Preferred=0.254mm) (All)
+Rule Violations :0
+
+Processing Rule : Height Constraint (Min=0mm) (Max=25.4mm) (Prefered=12.7mm) (All)
+Rule Violations :0
+
+Processing Rule : Hole Size Constraint (Min=0.0254mm) (Max=4mm) (All)
+Rule Violations :0
+
+
+Violations Detected : 0
+Time Elapsed        : 00:00:08

@@ -4,3 +4,5 @@
 *.~PcbDoc
 *.LOG
 *.~PcbLib
+*.~DRC
+*.~PrjGrp

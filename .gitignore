@@ -7,3 +7,6 @@
 *.~DRC
 *.~PrjGrp
 *.~Cam
+*.DRL
+*.DRR
+*.LDP

@@ -1,16 +1,13 @@
-Output: Gerber Files
-Type  : Gerber
+Output: NC Drill Files
+Type  : NC Drill
 From  : Project [MODEM.PrjPCB]
-   Generated File[main.GTL]
-   Generated File[main.GBL]
-   Generated File[main.GTS]
-   Generated File[main.GBS]
-   Generated File[main.GKO]
-   Generated File[main.RUL]
-   Generated File[main.REP]
+   Generated File[main.TXT]
+   Generated File[main.DRL]
+   Generated File[main.LDP]
+   Generated File[main.DRR]
 
 
-Files Generated   : 7
+Files Generated   : 4
 Documents Printed : 0
 
-Finished Output Generation At 14:57:09 On 30.03.2017
+Finished Output Generation At 9:54:36 On 31.03.2017

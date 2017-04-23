@@ -41,26 +41,20 @@ AnnotateSuffix=
 DoLibraryUpdate=1
 DoDatabaseUpdate=1
 [GeneratedDocument1]
-DocumentPath=Project Outputs for MODEM\main.DRL
-[GeneratedDocument2]
-DocumentPath=Project Outputs for MODEM\main.DRR
-[GeneratedDocument3]
 DocumentPath=Project Outputs for MODEM\main.GBL
-[GeneratedDocument4]
+[GeneratedDocument2]
 DocumentPath=Project Outputs for MODEM\main.GBS
-[GeneratedDocument5]
+[GeneratedDocument3]
 DocumentPath=Project Outputs for MODEM\main.GKO
-[GeneratedDocument6]
+[GeneratedDocument4]
 DocumentPath=Project Outputs for MODEM\main.GTL
-[GeneratedDocument7]
+[GeneratedDocument5]
 DocumentPath=Project Outputs for MODEM\main.GTS
-[GeneratedDocument8]
-DocumentPath=Project Outputs for MODEM\main.LDP
-[GeneratedDocument9]
+[GeneratedDocument6]
 DocumentPath=Project Outputs for MODEM\main.REP
-[GeneratedDocument10]
+[GeneratedDocument7]
 DocumentPath=Project Outputs for MODEM\main.RUL
-[GeneratedDocument11]
+[GeneratedDocument8]
 DocumentPath=Project Outputs for MODEM\main.TXT
 [OutputGroup1]
 Name=Netlist Outputs

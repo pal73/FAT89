@@ -13,7 +13,9 @@ enumModemState modemState = MS_UNKNOWN;
 char modemStatCnt0=0;
 signed short modemStatPwrAnalogBuffer=0;
 #define MODEM_PWR_STAT_CONST=500; 
-
+//***********************************************
+//Отладка
+bool bBLINK;
 
 
 //-----------------------------------------------
@@ -78,7 +80,8 @@ else digitalWrite(RESET_KEY,0);
 
 void setup() {
   Serial.begin(9600);
-
+  pinMode(LED_BUILTIN, OUTPUT);
+  power_on();
 }
 
 void loop()
@@ -110,16 +113,19 @@ if(millis()-previosMillis>=10)
 if(b100Hz)
   {
   b100Hz=0;
-  modem_stat_drv();
+  //modem_stat_drv();
   }
 if(b10Hz)
   {
   b10Hz=0;
   power_on_off_reset_drv();
+  
   }
 if(b1Hz)
   {
   b1Hz=0;
+  bBLINK=!bBLINK;
+  digitalWrite(LED_BUILTIN, bBLINK);
   }    
 
 }

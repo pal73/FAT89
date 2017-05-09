@@ -1,3 +1,5 @@
+#include <SoftwareSerial.h>
+
 #define PWR_KEY   4
 #define RESET_KEY 5
 #define PWR_STAT_PIN A7
@@ -15,11 +17,36 @@ signed short modemStatPwrAnalogBuffer=0;
 #define MODEM_PWR_STAT_CONST=500;
 char net_l_cnt_up,net_l_cnt_down;
 short net_l_cnt_one, net_l_cnt_zero, net_l_cnt_one_temp; 
+
+char toMainRxBuffer[20];
+char toMainRxBufferPtr;
+bool toMainRxBufferIsEmpty=1;
+
+SoftwareSerial toMain(8, 7);
+
+
 //***********************************************
 //Отладка
-bool bBLINK;
+bool bBLINK=1;
 
 
+//-----------------------------------------------
+//анализ данных пришедших от платы контроллера
+void toMainAn(void)
+{
+bool p;
+
+if(toMainRxBufferIsEmpty==0)
+p=strstr(toMainRxBuffer,"LEDON");
+if(p)
+  {
+  toMain.println("OK");  
+  bBLINK=!bBLINK;
+  Serial.println("ATD + +79139294352;");
+  }
+toMainRxBufferPtr=0;
+toMainRxBufferIsEmpty=1;
+}
 //-----------------------------------------------
 //оценка текущего состояния модема
 void modem_stat_drv(void)
@@ -131,6 +158,8 @@ void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
   power_on();
   Serial.println("SMS Messages Receiver");
+  toMain.begin(9600);
+  toMain.println("To Main");
 }
 
 void loop()
@@ -159,27 +188,34 @@ if(millis()-previosMillis>=10)
     }    
   }
 
+while(toMain.available())
+  {
+  toMainRxBuffer[toMainRxBufferPtr++]=toMain.read();
+  toMainRxBufferIsEmpty=0;  
+  }
 if(b100Hz)
   {
   b100Hz=0;
   modem_stat_drv();
-  if(modemState==MS_UNLINKED)digitalWrite(LED_BUILTIN, 0);
-  else digitalWrite(LED_BUILTIN, 1);
+  //if(modemState==MS_UNLINKED)digitalWrite(LED_BUILTIN, 0);
+  //else digitalWrite(LED_BUILTIN, 1);
+  digitalWrite(LED_BUILTIN, bBLINK);
+  toMainAn();
   }
 if(b10Hz)
   {
   b10Hz=0;
   power_on_off_reset_drv();
-  
+  //bBLINK=!bBLINK;
   }
 if(b1Hz)
   {
   b1Hz=0;
-  bBLINK=!bBLINK;
-  //digitalWrite(LED_BUILTIN, bBLINK);
+   
+  
 
-  Serial.print("analog signal    ");
-  Serial.println(modemStatPwrAnalogBuffer );
+  //Serial.print("analog signal    ");
+  //Serial.println(modemStatPwrAnalogBuffer );
   }    
 
 }

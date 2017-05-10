@@ -23,12 +23,30 @@ char toMainRxBufferPtr;
 bool toMainRxBufferIsEmpty=1;
 
 SoftwareSerial toMain(8, 7);
+#define gsmSerial Serial
+
 
 
 //***********************************************
 //Отладка
 bool bBLINK=1;
 
+//-----------------------------------------------
+//отправка смс
+void sendTextMessage() 
+{
+// Устанавливает текстовый режим для SMS-сообщений
+gsmSerial.print("AT+CMGF=1\r");
+delay(1000); // даём время на усваивание команды
+// Устанавливаем адресата: телефонный номер в международном формате
+gsmSerial.println("AT + CMGS = \"+79139294352\"");
+delay(1000);
+// Пишем текст сообщения
+gsmSerial.println("ALARM!");
+delay(100);
+// Отправляем Ctrl+Z, обозначая, что сообщение готово
+gsmSerial.println((char)26);
+}
 
 //-----------------------------------------------
 //анализ данных пришедших от платы контроллера
@@ -37,13 +55,20 @@ void toMainAn(void)
 bool p;
 
 if(toMainRxBufferIsEmpty==0)
-p=strstr(toMainRxBuffer,"LEDON");
-if(p)
+//p=strstr(toMainRxBuffer,"LEDON");
+if(strstr(toMainRxBuffer,"LEDON"))
   {
-  toMain.println("OK");  
+  toMain.println("1");  
   bBLINK=!bBLINK;
-  Serial.println("ATD + +79139294352;");
-  }
+  gsmSerial.println("ATD + +79139294352;");
+  } 
+else if(strstr(toMainRxBuffer,"SMS"))
+  {
+  toMain.println("2");  
+  bBLINK=!bBLINK;
+  sendTextMessage();
+  } 
+ 
 toMainRxBufferPtr=0;
 toMainRxBufferIsEmpty=1;
 }
@@ -192,6 +217,10 @@ while(toMain.available())
   {
   toMainRxBuffer[toMainRxBufferPtr++]=toMain.read();
   toMainRxBufferIsEmpty=0;  
+  }
+while(Serial.available())
+  {
+  toMain.write(Serial.read());    
   }
 if(b100Hz)
   {

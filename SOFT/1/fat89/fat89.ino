@@ -1,4 +1,5 @@
 #include <SoftwareSerial.h>
+#include <EEPROM.h>
 
 #define PWR_KEY   4
 #define RESET_KEY 5
@@ -25,6 +26,8 @@ bool toMainRxBufferIsEmpty=1;
 SoftwareSerial toMain(8, 7);
 #define gsmSerial Serial
 
+int a_ee; 
+#define a_eeadres 10
 
 
 //***********************************************
@@ -68,7 +71,11 @@ else if(strstr(toMainRxBuffer,"SMS"))
   bBLINK=!bBLINK;
   sendTextMessage();
   } 
- 
+else if(strstr(toMainRxBuffer,"EE"))
+  {
+  a_ee=EEPROM.read(a_eeadres);  
+  EEPROM.update(a_eeadres,a_ee+10);
+  }  
 toMainRxBufferPtr=0;
 toMainRxBufferIsEmpty=1;
 }
@@ -185,6 +192,18 @@ void setup() {
   Serial.println("SMS Messages Receiver");
   toMain.begin(9600);
   toMain.println("To Main");
+
+  //gsmSerial.print("ATEO\r");
+  //delay(300);
+
+  gsmSerial.print("AT+CMGF=1\r");
+  delay(300);
+  gsmSerial.print("AT+IFC=0, 0\r");
+  delay(300);
+  gsmSerial.print("AT+CPBS=\"SM\"\r");
+  delay(300);
+  gsmSerial.print("AT+CNMI=1,2,2,1,0\r");
+  delay(500);
 }
 
 void loop()
@@ -218,6 +237,12 @@ while(toMain.available())
   toMainRxBuffer[toMainRxBufferPtr++]=toMain.read();
   toMainRxBufferIsEmpty=0;  
   }
+
+/*while(toMain.available())
+  {
+  Serial.write(toMain.read()); 
+  }*/
+  
 while(Serial.available())
   {
   toMain.write(Serial.read());    
@@ -240,7 +265,9 @@ if(b10Hz)
 if(b1Hz)
   {
   b1Hz=0;
-   
+
+  a_ee = EEPROM.read(a_eeadres);
+  toMain.print("SO_"+String(a_ee)); 
   
 
   //Serial.print("analog signal    ");

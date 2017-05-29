@@ -30,6 +30,10 @@ int a_ee;
 #define a_eeadres 10
 
 
+String currStr = ""; //буфер для приема и анализа данных от модема
+// Переменная принимает значение True, если текущая строка является сообщением
+boolean isStringMessage = false;
+
 //***********************************************
 //Отладка
 bool bBLINK=1;
@@ -46,6 +50,7 @@ gsmSerial.println("AT + CMGS = \"+79139294352\"");
 delay(1000);
 // Пишем текст сообщения
 gsmSerial.println("ALARM!");
+gsmSerial.println(" "+String(a_ee));
 delay(100);
 // Отправляем Ctrl+Z, обозначая, что сообщение готово
 gsmSerial.println((char)26);
@@ -185,6 +190,10 @@ if(resetCnt)
 else digitalWrite(RESET_KEY,0);
 }
 
+//===============================================
+//===============================================
+//===============================================
+//===============================================
 void setup() {
   Serial.begin(9600);
   pinMode(LED_BUILTIN, OUTPUT);
@@ -205,7 +214,10 @@ void setup() {
   gsmSerial.print("AT+CNMI=1,2,2,1,0\r");
   delay(500);
 }
-
+//-----------------------------------------------
+//-----------------------------------------------
+//-----------------------------------------------
+//-----------------------------------------------
 void loop()
 {
 if(millis()-previosMillis>=10)
@@ -243,9 +255,50 @@ while(toMain.available())
   Serial.write(toMain.read()); 
   }*/
   
-while(Serial.available())
+while(gsmSerial.available())
   {
-  toMain.write(Serial.read());    
+  char currSymb = gsmSerial.read();    
+  if ('\r' == currSymb) 
+    {
+    if (isStringMessage) 
+      {
+      //если текущая строка - SMS-сообщение,
+      //отреагируем на него соответствующим образом
+      if (!currStr.compareTo("HI")) 
+        {
+        bBLINK=!bBLINK;
+        } 
+      else if (!currStr.compareTo("Green off")) 
+        {
+        //digitalWrite(greenPin, LOW);
+        } 
+      else if (!currStr.compareTo("Yellow on")) 
+        {
+        //digitalWrite(yellowPin, HIGH);
+        } 
+      else if (!currStr.compareTo("Yellow off")) 
+        {
+        //digitalWrite(yellowPin, LOW);
+        }
+      isStringMessage = false;
+      } 
+    else 
+      {
+      if (currStr.startsWith("+CMT")) 
+        {
+        //если текущая строка начинается с "+CMT",
+        //то следующая строка является сообщением
+        isStringMessage = true;
+        }
+      }
+    currStr = "";
+    } 
+  else if ('\n' != currSymb) 
+    {
+    currStr += String(currSymb);
+    }
+    
+  toMain.write(currSymb);    
   }
 if(b100Hz)
   {
@@ -266,8 +319,8 @@ if(b1Hz)
   {
   b1Hz=0;
 
-  a_ee = EEPROM.read(a_eeadres);
-  toMain.print("SO_"+String(a_ee)); 
+  //a_ee = EEPROM.read(a_eeadres);
+  //toMain.print("SO_"+String(a_ee)); 
   
 
   //Serial.print("analog signal    ");

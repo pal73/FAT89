@@ -12,3 +12,5 @@ ProjectPath=..\..\..\Protel\GAVT3\GAVT3.PRJPCB
 ProjectPath=MODEM\MODEM.PrjPCB
 [Project6]
 ProjectPath=..\..\FAT10\HARD\FAT10.PrjPCB
+[Project7]
+ProjectPath=..\..\FAT34\HARD\FAT34.PrjPCB
